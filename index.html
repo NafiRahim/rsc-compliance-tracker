@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSC Utility Compliance Desk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">RSC</div>
+        <div><strong>Utility Desk</strong><span>Compliance workspace</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" data-view="register"><span>☷</span> Compliance register</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="status-dot"></span>
+        <div><strong>Local beta mode</strong><small>Data stays in this browser</small></div>
+      </div>
+      <div class="sidebar-footer">RSC readiness system<br /><span>v0.1 · Private beta</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">EEE · FACTORY UTILITIES</p>
+          <h1 id="page-title">Good morning, Alex</h1>
+          <p class="subtitle" id="today-label"></p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="export-btn" title="Export CSV">⇩ <span>Export</span></button>
+          <button class="primary-button" id="open-add"><span>＋</span> Add task</button>
+          <div class="avatar">AR</div>
+        </div>
+      </header>
+
+      <section id="dashboard-view">
+        <div class="alert-banner" id="alert-banner">
+          <div class="alert-icon">!</div>
+          <div><strong id="alert-title">You are on top of it.</strong><p id="alert-copy">No urgent compliance items need attention today.</p></div>
+          <button class="text-button" id="view-alerts">View alerts →</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-label">Open tasks <span class="stat-icon blue">◌</span></div><strong id="open-count">0</strong><span class="stat-foot" id="open-foot">Across all categories</span></article>
+          <article class="stat-card"><div class="stat-label">Due this week <span class="stat-icon amber">◷</span></div><strong id="week-count">0</strong><span class="stat-foot">Plan your follow-ups</span></article>
+          <article class="stat-card"><div class="stat-label">Expiring soon <span class="stat-icon red">⌁</span></div><strong id="expiring-count">0</strong><span class="stat-foot">Within 30 days</span></article>
+          <article class="stat-card"><div class="stat-label">Completed <span class="stat-icon green">✓</span></div><strong id="completed-count">0</strong><span class="stat-foot" id="completed-foot">This register</span></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel task-panel">
+            <div class="panel-heading">
+              <div><h2>Action register</h2><p>Prioritised work across your utility operations</p></div>
+              <button class="ghost-button" id="view-register">View all <span>→</span></button>
+            </div>
+            <div class="toolbar">
+              <div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="Search task, file no. or owner..." /></div>
+              <select id="category-filter"><option value="all">All task types</option><option>Audit</option><option>Inspection</option><option>Renewal</option><option>Follow-up</option><option>Calibration</option><option>Permit</option></select>
+              <select id="status-filter"><option value="open">Open items</option><option value="all">All status</option><option value="completed">Completed</option></select>
+            </div>
+            <div id="task-list" class="task-list"></div>
+            <div id="empty-state" class="empty-state hidden"><div>✓</div><strong>No tasks match these filters</strong><span>Try changing the search or add a new task.</span></div>
+          </section>
+
+          <aside class="panel calendar-panel">
+            <div class="panel-heading"><div><h2>Upcoming</h2><p>Dates that need a plan</p></div><span class="month-label" id="month-label"></span></div>
+            <div id="upcoming-list" class="upcoming-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="register-view" class="hidden">
+        <div class="register-header"><div><p class="eyebrow">MASTER REGISTER</p><h2>Compliance register</h2><p class="subtitle">A spreadsheet-friendly source of truth for audits, expiry dates and follow-ups.</p></div><button class="primary-button" id="open-add-register">＋ Add record</button></div>
+        <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Task</th><th>Type</th><th>Priority</th><th>Due date</th><th>Expiry</th><th>File no.</th><th>Status</th></tr></thead><tbody id="register-body"></tbody></table></div></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modal">
+    <form class="modal" id="task-form">
+      <div class="modal-header"><div><p class="eyebrow">NEW REGISTER ITEM</p><h2>Add compliance task</h2></div><button type="button" class="close-button" id="close-modal">×</button></div>
+      <p class="modal-intro">Capture the action and key dates. The dashboard will flag items 30 days before expiry.</p>
+      <div class="form-grid">
+        <label class="full">Task name <input required name="title" placeholder="e.g. Annual boiler safety audit" /></label>
+        <label>Task type <select name="category"><option>Audit</option><option>Inspection</option><option>Renewal</option><option>Follow-up</option><option>Calibration</option><option>Permit</option></select></label>
+        <label>Priority <select name="priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label>
+        <label>Due date <input required type="date" name="dueDate" /></label>
+        <label>Expiry date <input type="date" name="expiryDate" /></label>
+        <label>File / certificate no. <input name="fileNo" placeholder="e.g. RSC-UTL-2026-014" /></label>
+        <label>Owner <input name="owner" placeholder="e.g. Maintenance team" /></label>
+        <label class="full">Notes <textarea name="notes" rows="3" placeholder="Follow-up details, vendor contact, evidence needed..."></textarea></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="ghost-button" id="cancel-modal">Cancel</button><button class="primary-button">Save task</button></div>
+    </form>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
